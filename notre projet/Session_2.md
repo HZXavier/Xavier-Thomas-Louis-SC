@@ -85,36 +85,12 @@ docker pull ety92/demo:v1
 
 Recherches possibles :
 ```bash
-docker history ety92/demo:v1
-strings $(docker save ety92/demo:v1 | tar xO) | grep API_KEY
+docker history --no-trunc ety92/demo:v1
+
 ```
+
+![Vault UI](ImageSession2/APIKEY.png)
 
 ### Bonne pratique pour éviter cette faille
 - Ne pas inclure de clés API en dur
 - Utiliser des variables d'environnement ou des fichiers `.env`
-
-## 6. Rootless mode
-
-### Installation de Docker en mode rootless
-```bash
-curl -fsSL https://get.docker.com/rootless | sh
-export PATH=/usr/bin:$PATH
-export DOCKER_HOST=unix:///run/user/$(id -u)/docker.sock
-```
-
-### Lancer un container nginx
-```bash
-docker run -d --name nginx -p 80:80 nginx
-```
-
-### Résolution du problème d'accès
-- Vérifier que le rootless mode permet bien l'accès aux ports bas
-- Utilisation de `iptables` ou `systemd` pour mapper un port plus élevé
-
-**Audit rootless avec Docker Bench**
-```bash
-sh docker-bench-security.sh
-```
-
-**Différences avec l’audit précédent :**
-![Résultat rootless](images/docker_bench_rootless.png)
