@@ -13,9 +13,6 @@ Utilisation de `netstat` ou `ss` :
 ```bash
 netstat -tulnp | grep 8080
 ```
-```bash
-ss -tulnp | grep 8080
-```
 
 **Résultat :**
 ![Exposition du port](ImageSession2/Container_non_restreints.png)
@@ -39,7 +36,7 @@ echo "test" >> /mnt/passwd  # Écriture dans le fichier
 **Résultat :**
 ![Permission refusée](ImageSession2/creationalpine.png)
 
-
+Il nous est possible de lire le fichier grâce à la permission "ro", cependant il est impossible d'écrire dedans.
 
 ## 3. Auditer la configuration d’un container avec Docker Bench
 
@@ -54,6 +51,8 @@ sh docker-bench-security.sh
 - Score de l’audit de l’hôte : ![Résultat](ImageSession2/score.png)
 - Audit du container `vulnerables/web-dvwa` : ![Audit](ImageSession2/dvwa.png)
 - Score de l'audit du container : ![Audit](ImageSession2/score2.png)
+
+On peut voir grâce à l'audit du container que certains ports sont ouverts et non-protégés, il est executé en tant qu'utilisateur ROOT et les permissions sont trop élevés.
 
 ## 4. Stocker et Utiliser des Secrets
 
@@ -71,7 +70,11 @@ docker run --cap-add=IPC_LOCK -e 'VAULT_LOCAL_CONFIG={"storage": {"file": {"path
 
 **Résultat :**
 ![Vault UI](ImageSession2/user.png)
+![Vault UI](ImageSession2/secret.png)
 
+Une fois connecté grâce au curl, il nous est possible de récupérer le secret voulu.
+
+![Vault UI](ImageSession2/secret2.png)
 
 ## 5. Trouver la clé API cachée dans une image Docker
 
