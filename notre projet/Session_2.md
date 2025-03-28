@@ -71,6 +71,7 @@ docker run --cap-add=IPC_LOCK -e 'VAULT_LOCAL_CONFIG={"storage": {"file": {"path
 **Résultat :**
 ![Vault UI](ImageSession2/user.png)
 ![Vault UI](ImageSession2/secret.png)
+![Vault UI](ImageSession2/policies.png)
 
 Une fois connecté grâce au curl, il nous est possible de récupérer le secret voulu.
 
@@ -89,7 +90,8 @@ docker history --no-trunc ety92/demo:v1
 
 ```
 
-![Vault UI](ImageSession2/APIKEY.png)
+![Vault UI](ImageSession2/apikey.png)
+
 
 ### Bonne pratique pour éviter cette faille
 - Ne pas inclure de clés API en dur
