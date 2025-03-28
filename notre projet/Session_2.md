@@ -1,1 +1,117 @@
 
+# Synthèse du TP : Sécurité Docker
+
+## 1. Éviter l’Exposition Involontaire de Ports
+
+### Lancer un container avec restriction de ports
+```bash
+docker run -d -p 8080:80 nginx
+```
+
+### Vérifier si le port est exposé
+Utilisation de `netstat` ou `ss` :
+```bash
+netstat -tulnp | grep 8080
+```
+```bash
+ss -tulnp | grep 8080
+```
+
+**Résultat :**
+![Exposition du port](ImageSession2/Container_non_restreints.png)
+![Exposition du port](ImageSession2/listening.png)
+
+## 2. Restreindre les permissions d’accès aux fichiers sensibles
+
+### Monter un volume avec des permissions spécifiques
+```bash
+docker run -it --rm -v /etc/passwd:/mnt/passwd:ro alpine sh
+```
+
+Vérifications :
+```bash
+cat /mnt/passwd  # Lecture du fichier
+```
+```bash
+echo "test" >> /mnt/passwd  # Écriture dans le fichier
+```
+
+**Résultat :**
+![Permission refusée](ImageSession2/creationalpine.png)
+
+
+
+## 3. Auditer la configuration d’un container avec Docker Bench
+
+### Installation et exécution
+```bash
+git clone https://github.com/docker/docker-bench-security.git
+cd docker-bench-security/
+sh docker-bench-security.sh
+```
+
+**Résultats :**
+- Score de l’audit de l’hôte : ![Résultat](ImageSession2/score.png)
+- Audit du container `vulnerables/web-dvwa` : ![Audit](ImageSession2/dvwa.png)
+- Score de l'audit du container : ![Audit](ImageSession2/score2.png)
+
+## 4. Stocker et Utiliser des Secrets
+
+### Lancer un container Vault
+```bash
+docker run --cap-add=IPC_LOCK -e 'VAULT_LOCAL_CONFIG={"storage": {"file": {"path": "/vault/file"}}, "listener": [{"tcp": { "address": "0.0.0.0:8200", "tls_disable": true}}], "default_lease_ttl": "168h", "max_lease_ttl": "720h", "ui": true}' -p 8200:8200 vault:1.13.3 server
+```
+
+### Création et récupération d'un secret
+- Connexion à l'UI sur `localhost:8200`
+- Création d'un utilisateur et mot de passe
+- Création d'une ACL pour lire un secret
+- Ajout du secret sous `containers/mon-secret`
+- Récupération du secret via `curl` dans un container `alpine`
+
+**Résultat :**
+![Vault UI](ImageSession2/user.png)
+
+
+## 5. Trouver la clé API cachée dans une image Docker
+
+### Récupérer et analyser l’image
+```bash
+docker pull ety92/demo:v1
+```
+
+Recherches possibles :
+```bash
+docker history ety92/demo:v1
+strings $(docker save ety92/demo:v1 | tar xO) | grep API_KEY
+```
+
+### Bonne pratique pour éviter cette faille
+- Ne pas inclure de clés API en dur
+- Utiliser des variables d'environnement ou des fichiers `.env`
+
+## 6. Rootless mode
+
+### Installation de Docker en mode rootless
+```bash
+curl -fsSL https://get.docker.com/rootless | sh
+export PATH=/usr/bin:$PATH
+export DOCKER_HOST=unix:///run/user/$(id -u)/docker.sock
+```
+
+### Lancer un container nginx
+```bash
+docker run -d --name nginx -p 80:80 nginx
+```
+
+### Résolution du problème d'accès
+- Vérifier que le rootless mode permet bien l'accès aux ports bas
+- Utilisation de `iptables` ou `systemd` pour mapper un port plus élevé
+
+**Audit rootless avec Docker Bench**
+```bash
+sh docker-bench-security.sh
+```
+
+**Différences avec l’audit précédent :**
+![Résultat rootless](images/docker_bench_rootless.png)
