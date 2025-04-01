@@ -2,7 +2,7 @@
 
 ## Activites pratiques 1
 
-# 1. Lancer un container simple
+### 1. Lancer un container simple
 
 Apres avoir installer docker nous executons la commande suivante :
 ```bash
@@ -11,7 +11,7 @@ docker run --rm hello-world
 Cette commade telecharger et execute l'image hello-world
 ![Resultat de la commande hello-world](ImageSession1/hello-world.png)
 
-# 2. Explorer un container en interactif 
+### 2. Explorer un container en interactif 
 
 Nous executons  la commande suivante : 
 ```bash
@@ -21,7 +21,7 @@ docker run -it --rm alpine sh
 
 ![Resultat de la commande alpine sh](ImageSession1/alpine%20cmd.png)
 
-# 3. Analyser les ressources systeme d'un container 
+### 3. Analyser les ressources systeme d'un container 
 
 Nous executons la commande suivante :
 ```bash
@@ -38,7 +38,7 @@ docker stats test-container
 
 Cela nous affiche en temos reel la consommation CPU, RAM, Reseau, disque.
 
-# 4. Lister les capacites d'un container 
+### 4. Lister les capacites d'un container 
 
 En executant la commande suivante :
 ```bash
@@ -53,7 +53,7 @@ On comprend que Docker limite par défaut les permissions d’un conteneur, et q
 
 ## Activites pratiques 2
 
-# 1. Tester un Container avec des Permissions Élevées
+### 1. Tester un Container avec des Permissions Élevées
 
 Nous lancons un container en mode privilégié et executons une commande système :
 ```bash
@@ -69,7 +69,7 @@ Cette option accorde au conteneur un accès complet aux périphériques du syst�
 
 En cas de compromission, un attaquant pourrait ainsi s’échapper du conteneur, accéder aux fichiers sensibles de l’hôte, et potentiellement en prendre le contrôle total.
 
-# 2. Simuler une Évasion de Container
+### 2. Simuler une Évasion de Container
 
 Nous exécutons la commande suivante :
 ```bash
@@ -83,7 +83,7 @@ Monter le système de fichiers de l’hôte (/) dans un conteneur représente un
 
 Cette pratique expose l’hôte à de nombreux risques : le conteneur peut lire ou modifier des fichiers sensibles, compromettre la confidentialité des données, altérer l’intégrité du système, contourner les mécanismes de sécurité comme AppArmor ou SELinux, voire installer des malwares ou obtenir un accès root sur l’hôte.
 
-# 3. Créer une Image Sécurisée
+### 3. Créer une Image Sécurisée
 
 Dockerfile utilisé:
 ```bash
@@ -102,7 +102,7 @@ En utilisant un Dockerfile minimaliste, nous avons construit une image sécuris�
 
 Cette approche permet de réduire la surface d’attaque du conteneur, car même en cas de compromission, un attaquant n’aurait pas les privilèges nécessaires pour interagir avec des éléments sensibles du système hôte.
 
-# 4 & 5. Restreindre l’accès réseau d’un container & Bloquer la connexion internet dans un container :
+### 4 & 5. Restreindre l’accès réseau d’un container & Bloquer la connexion internet dans un container :
 
 Pour bloquer la connexion réseau d’un conteneur Docker, notamment l’accès à Internet, nous utilisons la commande suivante :
 ```bash
@@ -111,14 +111,14 @@ docker network disconnect bridge test-container
 
 Cette commande déconnecte le conteneur nommé test-container du réseau bridge par défaut, ce qui coupe toute communication réseau, y compris vers l’extérieur.
 
-# 6. Tester l’accès internet avec par exemple ping google.com.
+### 6. Tester l’accès internet avec par exemple ping google.com.
 
 Pour vérifier que la coupure était effective, nous avons lancé une commande ping depuis le conteneur :
 ![Resultat de la commande UID ](ImageSession1/acces-reseau.png)
 
 Le test a échoué, confirmant que le conteneur n’avait plus accès à Internet.
 
-# 7. Télécharger et Scanner une Image
+### 7. Télécharger et Scanner une Image
 
 On commence par récupérer une image volontairement vulnérable :
 ```bash
@@ -141,7 +141,7 @@ L’image scannée repose sur Debian 9.5, un système obsolète et non maintenu,
 *CVE-2021-44790 : Débordement de tampon dans mod_lua, exploitable via une requête multipart malveillante.
 *CVE-2022-22720 / 22721 : Vulnérabilités liées à la manipulation des requêtes HTTP dans Apache, pouvant entraîner des attaques de type HTTP request smuggling ou corruption mémoire.
 
-# 8. Scanner une Image pour Détecter les Vulnérabilités
+### 8. Scanner une Image pour Détecter les Vulnérabilités
 
 Analyse d'une image avec Grype :
 ```bash
