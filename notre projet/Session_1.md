@@ -8,7 +8,7 @@ Apres avoir installer docker nous executons la commande suivante :
 ```bash
 docker run --rm hello-world
 ```
-Cette commade telecharger et execute l'iamge hello-world
+Cette commade telecharger et execute l'image hello-world
 ![Resultat de la commande hello-world](ImageSession1/hello-world.png)
 
 # 2. Explorer un container en interactif 
@@ -19,7 +19,7 @@ docker run -it --rm alpine sh
 ```
 "-it" nous permet de lancer une session interactive avec un shell via lequel nous allons tester des commandes Linux de bases (ls,pwd,whoami)
 
-![Resultat de la commande alpine sh](./Image%20session%201/alpine%20cmd.png)
+![Resultat de la commande alpine sh](ImageSession1/alpine%20cmd.png)
 
 # 3. Analyser les ressources systeme d'un container 
 
@@ -27,14 +27,14 @@ Nous executons la commande suivante :
 ```bash
 docker run -d --name test-container nginx
 ```
-![Resultat de la commande test-container nginx](./Image%20session%201/test-container-nginx.png)
+![Resultat de la commande test-container nginx](ImageSession1/test-container-nginx.png)
 
 Cela nous permet de lamcer un container base sur l'image nginx
 Puis nous executons la commande suivante :
 ```bash
 docker stats test-container
 ```
-![Resultat de la commande stats test-container ](./Image%20session%201/test-container-stats.png)
+![Resultat de la commande stats test-container ](ImageSession1/test-container-stats.png)
 
 Cela nous affiche en temos reel la consommation CPU, RAM, Reseau, disque.
 
@@ -46,7 +46,7 @@ docker run --rm --cap-add=SYS_ADMIN alpine sh -c 'cat /proc/self/status'
 ```
 Nous allons temporairement ajouter une **capacité spéciale : `SYS_ADMIN`** pour y observer les changements.
 
-![Resultat de la commande capa ](./Image%20session%201/capabilities.png)
+![Resultat de la commande capa ](ImageSession1/capabilities.png)
 
 Le format CapEff nous donnes les capabilities effectives, dans notres cas elle contient maintenant la capacite SYS_ADMIN representee par 00000000a82425fb
 On comprend que Docker limite par défaut les permissions d’un conteneur, et qu’il est possible d’ajouter des droits spécifiques pour lui donner plus de privilèges si nécessaire.
@@ -59,7 +59,7 @@ Nous lancons un container en mode privilégié et executons une commande systèm
 ```bash
 docker run --rm --privileged alpine sh -c 'echo hello from privileged mode'
 ```
-![Resultat de la commande privi ](./Image%20session%201/privileged-mode.png)
+![Resultat de la commande privi ](ImageSession1/privileged-mode.png)
 
 Le conteneur affiche correctement le message: "hello from privileged mode"
 
@@ -75,7 +75,7 @@ Nous exécutons la commande suivante :
 ```bash
 docker run --rm -v /:/mnt alpine sh -c 'ls /mnt'
 ```
-![Resultat de la commande / ](./Image%20session%201/acces-ls.png)
+![Resultat de la commande / ](ImageSession1/acces-ls.png)
 
 Cette commande montre bien que le conteneur peut lister tout le système de fichiers de l’hôte.
 
@@ -93,10 +93,10 @@ USER appuser
 CMD ["echo", "Container sécurisé!"]
 ```
 Construction et exécution de l’image :
-![Resultat de la commande build & run ](./Image%20session%201/dockerfile-build&run.png)
+![Resultat de la commande build & run ](ImageSession1/dockerfile-build&run.png)
 
 Vérification de l'UID et du nom d'utilisateur dans le conteneur :
-![Resultat de la commande UID ](./Image%20session%201/UID.png)
+![Resultat de la commande UID ](ImageSession1/UID.png)
 
 En utilisant un Dockerfile minimaliste, nous avons construit une image sécurisée qui suit les bonnes pratiques de sécurité Docker.Le fichier définit la création d’un utilisateur non-root (appuser) et configure le conteneur pour qu’il s’exécute sous cet utilisateur plutôt qu’en tant que root. 
 
@@ -114,7 +114,7 @@ Cette commande déconnecte le conteneur nommé test-container du réseau bridge 
 # 6. Tester l’accès internet avec par exemple ping google.com.
 
 Pour vérifier que la coupure était effective, nous avons lancé une commande ping depuis le conteneur :
-![Resultat de la commande UID ](./Image%20session%201/acces-reseau.png)
+![Resultat de la commande UID ](ImageSession1/acces-reseau.png)
 
 Le test a échoué, confirmant que le conteneur n’avait plus accès à Internet.
 
@@ -147,7 +147,7 @@ Analyse d'une image avec Grype :
 ```bash
 grype alpine:latest
 ```
-![Resultat de la commande grype ](./Image%20session%201/Grype.png)
+![Resultat de la commande grype ](ImageSession1/Grype.png)
 
 Grype a détecté aucune vulnérabilités, ce qui est cohérent avec l’objectif d’Alpine : être une image minimaliste et sécurisée.
 
