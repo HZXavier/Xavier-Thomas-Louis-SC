@@ -9,7 +9,7 @@ Apres avoir installer docker nous executons la commande suivante :
 docker run --rm hello-world
 ```
 Cette commade telecharger et execute l'iamge hello-world
-![Resultat de la commande hello-world](./Image%20session%201/hello-world.png)
+![Resultat de la commande hello-world](ImageSession1/hello-world.png)
 
 # 2. Explorer un container en interactif 
 
